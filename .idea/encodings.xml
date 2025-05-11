@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/microservice-agriculturalProcess/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-config/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-field/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-finance/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-iam/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-payment/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-profile/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-store/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-subscription/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,38 @@
+server:
+  port: 8094
+
+spring:
+  application:
+    name: msvc-finance
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/finance-db?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: com.agrocontrol.msvc_finance.shared.infrastructure.persistence.jpa.SnakeCasePhysicalNamingStrategy
+    open-in-view: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+documentation:
+  application:
+    description: "@project.description@"
+    version: "@project.version@"
+
+authorization:
+  jwt:
+    secret: 8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb
+    expiration:
+      days: 7
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
