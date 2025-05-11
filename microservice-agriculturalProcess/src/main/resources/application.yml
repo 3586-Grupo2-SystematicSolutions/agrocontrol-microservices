@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: msvc-agriculturalProcess
+
+  config:
+    import: optional:configserver:http://localhost:8888
