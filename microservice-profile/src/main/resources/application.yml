@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: msvc-profile
+
+  config:
+    import: optional:configserver:http://localhost:8888
