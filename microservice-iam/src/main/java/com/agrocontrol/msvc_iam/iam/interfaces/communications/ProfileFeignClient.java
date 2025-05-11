@@ -1,0 +1,17 @@
+package com.agrocontrol.msvc_iam.iam.interfaces.communications;
+
+import com.agrocontrol.msvc_iam.iam.interfaces.communications.request.CreateAgriculturalProducerResource;
+import com.agrocontrol.msvc_iam.iam.interfaces.communications.request.CreateDistributorResource;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+@FeignClient(name = "msvc-profile", url = "localhost:8080/api/v1/profiles")
+public interface ProfileFeignClient {
+    @PostMapping("/agricultural-producer/{userId}")
+    Long createAgriculturalProducer(@PathVariable Long userId, @RequestBody CreateAgriculturalProducerResource resource);
+
+    @PostMapping("/distributor/{userId}")
+    Long createDistributor(@PathVariable Long userId, @RequestBody CreateDistributorResource resource);
+}
