@@ -2,6 +2,7 @@ package com.agrocontrol.msvc_store.store.interfaces.rest;
 
 import com.agrocontrol.msvc_store.store.domain.model.aggregates.Product;
 import com.agrocontrol.msvc_store.store.domain.model.queries.GetProductByUserIdQuery;
+import com.agrocontrol.msvc_store.store.domain.model.queries.GetProductNameByIdQuery;
 import com.agrocontrol.msvc_store.store.domain.model.queries.GetProductsNotOwnedByUserIdQuery;
 import com.agrocontrol.msvc_store.store.domain.services.ProductCommandService;
 import com.agrocontrol.msvc_store.store.domain.services.ProductQueryService;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -160,5 +162,19 @@ public class ProductsController {
                 .toList();
 
         return ResponseEntity.ok(resources);
+    }
+
+    @Operation(summary = "Get name product by productId")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product Name found"),
+            @ApiResponse(responseCode = "404", description = "Product not found"),
+    })
+    @GetMapping("/name/{productId}")
+    public ResponseEntity<String> getProductName(@PathVariable Long productId) {
+        var query = new GetProductNameByIdQuery(productId);
+        var product = this.productQueryService.handle(query);
+        return product
+                .map( value -> ResponseEntity.ok(value.getName()) )
+                .orElseGet( () -> ResponseEntity.notFound().build() );
     }
 }

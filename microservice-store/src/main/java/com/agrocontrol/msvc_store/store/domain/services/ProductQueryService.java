@@ -11,5 +11,6 @@ public interface ProductQueryService {
     List<Product> handle(GetProductsNotOwnedByUserIdQuery query);
     Optional<Product> handle(GetProductByIdQuery query);
     Optional<Product> handle(GetProductByNameQuery query);
+    Optional<Product> handle(GetProductNameByIdQuery query);
     boolean handle(CheckProductByIdQuery query);
 }
