@@ -177,4 +177,21 @@ public class ProductsController {
                 .map( value -> ResponseEntity.ok(value.getName()) )
                 .orElseGet( () -> ResponseEntity.notFound().build() );
     }
+
+    @Operation(summary = "Consume product quantity by productId")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product quantity updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid input or product not found"),
+    })
+    @PutMapping("/consume-quantity/{productId}")
+    public ResponseEntity<Void> consumeProductQuantity(@PathVariable Long productId, @RequestBody ChangeQuantityOfProductResource resource) {
+        Optional<Product> product = this.productCommandService
+                .handle(ChangeQuantityOfProductCommandFromResourceAssembler.toCommandFromResource(resource, productId));
+
+        if (product.isPresent()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

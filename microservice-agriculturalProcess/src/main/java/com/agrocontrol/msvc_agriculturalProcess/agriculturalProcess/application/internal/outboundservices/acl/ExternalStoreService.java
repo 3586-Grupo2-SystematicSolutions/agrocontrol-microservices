@@ -1,21 +1,23 @@
 package com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.application.internal.outboundservices.acl;
 
-import com.agrocontrol.backend.store.interfaces.acl.ProductsContextFacade;
+import com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.interfaces.communications.ProductFeignClient;
+import com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.interfaces.communications.request.ChangeQuantityOfProductResource;
 import org.springframework.stereotype.Service;
 
 @Service("externalStoreService")
 public class ExternalStoreService {
-    private final ProductsContextFacade productsContextFacade;
+    private final ProductFeignClient productFeignClient;
 
-    public ExternalStoreService(ProductsContextFacade productsContextFacade) {
-        this.productsContextFacade = productsContextFacade;
+    public ExternalStoreService(ProductFeignClient productFeignClient) {
+        this.productFeignClient = productFeignClient;
     }
 
     public String getProductNameById(Long productId) {
-        return this.productsContextFacade.getProductNameById(productId);
+        return this.productFeignClient.getProductNameById(productId);
     }
 
     public void changeQuantityOfProduct(Long productId, Integer quantity) {
-        this.productsContextFacade.changeQuantityOfProduct(productId, quantity, "decrease");
+        var resource = new ChangeQuantityOfProductResource( "decrease", quantity);
+        this.productFeignClient.consumeProductQuantity(productId, resource);
     }
 }
