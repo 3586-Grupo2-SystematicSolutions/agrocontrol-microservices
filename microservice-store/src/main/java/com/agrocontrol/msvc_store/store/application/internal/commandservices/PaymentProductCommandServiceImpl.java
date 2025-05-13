@@ -1,6 +1,7 @@
 package com.agrocontrol.msvc_store.store.application.internal.commandservices;
 
 
+import com.agrocontrol.msvc_store.store.application.internal.outboundservices.acl.ExternalProfileService;
 import com.agrocontrol.msvc_store.store.domain.model.aggregates.PaymentProduct;
 import com.agrocontrol.msvc_store.store.domain.model.aggregates.Product;
 import com.agrocontrol.msvc_store.store.domain.model.commands.CreatePaymentProductCommand;
@@ -15,14 +16,14 @@ import java.util.Optional;
 public class PaymentProductCommandServiceImpl implements PaymentProductCommandService {
     private final PaymentProductRepository paymentProductRepository;
     private final ProductRepository productRepository;
-    private final ExternalProfileContextFacade externalProfileContextFacade;
+    private final ExternalProfileService externalProfileService;
 
     public PaymentProductCommandServiceImpl(PaymentProductRepository paymentProductRepository,
                                             ProductRepository productRepository,
-                                            ExternalProfileContextFacade externalProfileContextFacade) {
+                                            ExternalProfileService externalProfileService) {
         this.paymentProductRepository = paymentProductRepository;
         this.productRepository = productRepository;
-        this.externalProfileContextFacade = externalProfileContextFacade;
+        this.externalProfileService = externalProfileService;
     }
 
     @Override
@@ -30,7 +31,7 @@ public class PaymentProductCommandServiceImpl implements PaymentProductCommandSe
         var product = productRepository.findById(command.productId())
                 .orElseThrow(() -> new IllegalArgumentException("The product not exist with id" + command.productId()));
 
-        externalProfileContextFacade.exitsAgriculturalProducer(command.userId()); // Verify if the user is an agricultural producer
+        externalProfileService.existsAgriculturalProducer(command.userId()); // Verify if the user is an agricultural producer
 
         Long distributorId = product.getUserId();
         String productName = product.getName();

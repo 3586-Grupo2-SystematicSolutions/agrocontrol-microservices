@@ -8,4 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ProfileFeignClient {
     @GetMapping("/distributor/exists/{userId}")
     Boolean existsDistributorByUserId(@PathVariable Long userId);
+
+    @GetMapping("/agricultural-producer/exists/{userId}")
+    Boolean existsAgriculturalProducerByUserId(@PathVariable Long userId);
 }

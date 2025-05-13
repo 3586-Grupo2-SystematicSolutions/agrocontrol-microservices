@@ -14,7 +14,7 @@ spring:
     hibernate:
       ddl-auto: update
       naming:
-        physical-strategy: com.agrocontrol.msvc-agriculturalProcess.shared.infrastructure.persistence.jpa.SnakeCasePhysicalNamingStrategy
+        physical-strategy: com.agrocontrol.msvc_agriculturalProcess.shared.infrastructure.persistence.jpa.SnakeCasePhysicalNamingStrategy
     open-in-view: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect

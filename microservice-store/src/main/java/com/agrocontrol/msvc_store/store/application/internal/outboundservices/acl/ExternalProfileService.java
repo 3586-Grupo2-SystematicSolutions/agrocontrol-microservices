@@ -19,4 +19,11 @@ public class ExternalProfileService {
             throw new IllegalArgumentException("Distributor not found with id %s".formatted(userId));
         }
     }
+
+    public void existsAgriculturalProducer(Long userId) {
+        boolean exists = profileFeignClient.existsAgriculturalProducerByUserId(userId);
+        if (!exists) {
+            throw new IllegalArgumentException("Agricultural Prodcuer not found with id %s".formatted(userId));
+        }
+    }
 }
