@@ -1,6 +1,5 @@
 package com.agrocontrol.msvc_field.fields.interfaces.rest;
 
-
 import com.agrocontrol.msvc_field.fields.domain.model.aggregates.Worker;
 import com.agrocontrol.msvc_field.fields.domain.model.queries.GetAllWorkersByProducerId;
 import com.agrocontrol.msvc_field.fields.domain.model.queries.GetFullnameByWorkerId;
@@ -86,7 +85,7 @@ public class WorkersController {
             @ApiResponse(responseCode = "200", description = "Full name found"),
             @ApiResponse(responseCode = "404", description = "Worker not found")
     })
-    @GetMapping("/fullname/{workerId}")
+    @GetMapping("/fullName/{workerId}")
     public ResponseEntity<String> getWorkerFullName(@PathVariable Long workerId) {
         var query = new GetFullnameByWorkerId(workerId);
         Optional<Worker> worker = this.workerQueryService.findFullNameById(query);
