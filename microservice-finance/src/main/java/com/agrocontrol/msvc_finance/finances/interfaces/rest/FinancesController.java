@@ -72,4 +72,21 @@ public class FinancesController {
 
         return ResponseEntity.ok(resources);
     }
+
+    @Operation(summary = "Create a new finance (void response)", description = "Create a new finance with no response body")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Finance created"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
+    @PostMapping("/external-finance")
+    public ResponseEntity<Void> createFinanceVoid(@RequestBody CreateFinanceResource resource) {
+        Optional<Finance> finance = this.financeCommandService.handle(CreateFinanceCommandFromResourceAssembler.toCommandFromResource(resource));
+
+        if (finance.isPresent()) {
+            return ResponseEntity.status(CREATED).build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }
