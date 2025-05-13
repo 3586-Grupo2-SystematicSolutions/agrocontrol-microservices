@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
     List<Worker> findAllByProducerId(ProducerId producerId);
     Optional<Worker> findByIdAndProducerId(Long workerId, ProducerId producerId);
+    Optional<Worker> findFullNameById(Long workerId);
 }

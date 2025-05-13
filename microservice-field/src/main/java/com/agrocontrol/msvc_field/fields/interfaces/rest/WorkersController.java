@@ -3,6 +3,7 @@ package com.agrocontrol.msvc_field.fields.interfaces.rest;
 
 import com.agrocontrol.msvc_field.fields.domain.model.aggregates.Worker;
 import com.agrocontrol.msvc_field.fields.domain.model.queries.GetAllWorkersByProducerId;
+import com.agrocontrol.msvc_field.fields.domain.model.queries.GetFullnameByWorkerId;
 import com.agrocontrol.msvc_field.fields.domain.services.WorkerCommandService;
 import com.agrocontrol.msvc_field.fields.domain.services.WorkerQueryService;
 import com.agrocontrol.msvc_field.fields.interfaces.rest.resources.CreateWorkerResource;
@@ -49,7 +50,7 @@ public class WorkersController {
     }
     @Operation(summary = "Get All by User ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201",description = "Workers Founded"),
+            @ApiResponse(responseCode = "200",description = "Workers Founded"),
             @ApiResponse(responseCode = "400",description = "Workers not found")
     })
     @GetMapping("/{producerId}")
@@ -80,5 +81,19 @@ public class WorkersController {
         return ResponseEntity.ok().build();
 
     } */
+    @Operation(summary = "Get Full Name by Worker ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Full name found"),
+            @ApiResponse(responseCode = "404", description = "Worker not found")
+    })
+    @GetMapping("/fullname/{workerId}")
+    public ResponseEntity<String> getWorkerFullName(@PathVariable Long workerId) {
+        var query = new GetFullnameByWorkerId(workerId);
+        Optional<Worker> worker = this.workerQueryService.findFullNameById(query);
+
+        return worker
+                .map(value -> ResponseEntity.ok(value.getFullName()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 }
