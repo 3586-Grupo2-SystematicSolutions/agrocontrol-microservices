@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "msvc-product", url = "localhost:8080/api/v1/products")
+@FeignClient(name = "msvc-store")
 public interface ProductFeignClient {
-    @GetMapping("/name/{productId}")
+    @GetMapping("/api/v1/products/name/{productId}")
     String getProductNameById (@PathVariable Long productId);
 
-    @PutMapping("/consume-quantity/{productId}")
+    @PutMapping("/api/v1/products/consume-quantity/{productId}")
     Void consumeProductQuantity(@PathVariable Long productId, @RequestBody ChangeQuantityOfProductResource resource);
 }

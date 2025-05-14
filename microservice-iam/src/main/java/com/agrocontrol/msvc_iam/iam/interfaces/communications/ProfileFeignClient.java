@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "msvc-profile", url = "localhost:8080/api/v1/profiles")
+@FeignClient(name = "msvc-profile")
 public interface ProfileFeignClient {
-    @PostMapping("/agricultural-producer/{userId}")
+    @PostMapping("/api/v1/profiles/agricultural-producer/{userId}")
     Long createAgriculturalProducer(@PathVariable Long userId, @RequestBody CreateAgriculturalProducerResource resource);
 
-    @PostMapping("/distributor/{userId}")
+    @PostMapping("/api/v1/profiles/distributor/{userId}")
     Long createDistributor(@PathVariable Long userId, @RequestBody CreateDistributorResource resource);
 }

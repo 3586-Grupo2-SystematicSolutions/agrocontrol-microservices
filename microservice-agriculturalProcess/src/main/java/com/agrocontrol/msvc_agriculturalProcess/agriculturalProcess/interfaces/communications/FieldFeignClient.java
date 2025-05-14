@@ -4,8 +4,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "msvc-field", url = "localhost:8080/api/v1/workers")
+@FeignClient(name = "msvc-field")
 public interface FieldFeignClient {
-    @GetMapping("/fullName/{workerId}")
+    @GetMapping("/api/v1/workers/fullName/{workerId}")
     String getWorkerFullNameById(@PathVariable Long workerId);
 }

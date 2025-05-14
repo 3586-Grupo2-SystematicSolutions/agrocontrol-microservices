@@ -5,8 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "msvc-finance", url = "localhost:8080/api/v1/finances")
+@FeignClient(name = "msvc-finance")
 public interface FinanceFeignClient {
-    @PostMapping("/external-finance")
+    @PostMapping("/api/v1/finances/external-finance")
     void createFinance(@RequestBody CreateFinanceResource resource);
 }

@@ -4,8 +4,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "msvc-profile", url = "localhost:8080/api/v1/profiles")
+@FeignClient(name = "msvc-profile")
 public interface ProfileFeignClient {
-    @GetMapping("/agricultural-producer/exists/{userId}")
+    @GetMapping("/api/v1/profiles/agricultural-producer/exists/{userId}")
     Boolean existsAgriculturalProducerByUserId(@PathVariable Long userId);
 }
