@@ -36,11 +36,11 @@ spring:
         - id: msvc-subscription
           uri: lb://msvc-subscription
           predicates:
-              - Path=//api/v1/subscriptions/**
+              - Path=/api/v1/subscriptions/**
         - id: msvc-agriculturalProcess
           uri: lb://msvc-agriculturalProcess
           predicates:
-              - Path=///api/v1/agricultural-processes/**
+              - Path=/api/v1/agricultural-processes/**
 
 eureka:
   client:

@@ -23,6 +23,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
     @Override
     public List<Product> handle(GetProductByUserIdQuery query) {
+        externalProfileService.existsDistributor(query.userId());
         return productRepository.findByUserId(query.userId());
     }
 
