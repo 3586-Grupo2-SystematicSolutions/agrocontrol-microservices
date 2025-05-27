@@ -1,6 +1,7 @@
 package com.agrocontrol.msvc_iam.iam.interfaces.rest;
 
 
+import com.agrocontrol.msvc_iam.iam.domain.model.commands.RefreshTokenCommand;
 import com.agrocontrol.msvc_iam.iam.domain.services.UserCommandService;
 import com.agrocontrol.msvc_iam.iam.interfaces.rest.resources.*;
 import com.agrocontrol.msvc_iam.iam.interfaces.rest.transform.*;
@@ -11,10 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * AuthenticationController
@@ -93,5 +91,16 @@ public class AuthenticationController {
         }
         var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
         return new ResponseEntity<>(userResource, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/verify-token/{token}")
+    public ResponseEntity<AuthenticatedUserResource> verifyToken(@PathVariable String token) {
+        var refreshTokenCommand = new RefreshTokenCommand(token);
+        var authenticatedUser = userCommandService.handle(refreshTokenCommand);
+        if (authenticatedUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var authenticatedUserResource = AuthenticatedUserResourceFromEntityAssembler.toResourceFromEntity(authenticatedUser.get().getLeft(), authenticatedUser.get().getRight());
+        return ResponseEntity.ok(authenticatedUserResource);
     }
 }
