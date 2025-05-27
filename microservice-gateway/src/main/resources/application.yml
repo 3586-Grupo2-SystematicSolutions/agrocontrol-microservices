@@ -2,6 +2,13 @@ spring:
   application:
     name: msvc-gateway
 
+  profiles:
+    default: oauth2
+
   config:
     import: optional:configserver:http://localhost:8888
-
+eureka:
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
