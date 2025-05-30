@@ -50,7 +50,7 @@ public class AuthFilter implements GatewayFilter {
 
         return webClientBuilder.build()
                 .post()
-                .uri("lb://msvc-iam/msvc-iam/api/v1/authentication/verify-token/" + token)
+                .uri("lb://msvc-iam/api/v1/authentication/verify-token/" + token)
                 .retrieve()
                 .bodyToMono(TokenDto.class)
                 .timeout(Duration.ofSeconds(10))

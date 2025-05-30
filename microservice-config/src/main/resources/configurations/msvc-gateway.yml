@@ -4,7 +4,59 @@ server:
 spring:
   application:
     name: msvc-gateway
-  # Quitar la sección cloud.gateway.routes
+
+  cloud:
+    gateway:
+      routes:
+        - id: msvc-iam
+          uri: lb://MSVC-IAM
+          predicates:
+            - Path=/api/v1/authentication/**
+
+        - id: msvc-profile
+          uri: lb://MSVC-PROFILE
+          predicates:
+            - Path=/api/v1/profiles/**
+
+        - id: msvc-field-fields
+          uri: lb://MSVC-FIELD
+          predicates:
+            - Path=/api/v1/fields/**
+
+        - id: msvc-field-workers
+          uri: lb://MSVC-FIELD
+          predicates:
+            - Path=/api/v1/workers/**
+
+        - id: msvc-finance
+          uri: lb://MSVC-FINANCE
+          predicates:
+            - Path=/api/v1/finances/**
+
+        - id: msvc-payment
+          uri: lb://MSVC-PAYMENT
+          predicates:
+            - Path=/api/v1/payments/**
+
+        - id: msvc-store-products
+          uri: lb://MSVC-STORE
+          predicates:
+            - Path=/api/v1/products/**
+
+        - id: msvc-store-payment-products
+          uri: lb://MSVC-STORE
+          predicates:
+            - Path=/api/v1/payment-products/**
+
+        - id: msvc-subscription
+          uri: lb://MSVC-SUBSCRIPTION
+          predicates:
+            - Path=/api/v1/subscriptions/**
+
+        - id: msvc-agriculturalProcess
+          uri: lb://MSVC-AGRICULTURALPROCESS
+          predicates:
+            - Path=/api/v1/agricultural-processes/**
 
 eureka:
   client:

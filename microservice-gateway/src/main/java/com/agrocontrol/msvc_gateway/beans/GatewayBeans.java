@@ -31,17 +31,57 @@ public class GatewayBeans {
         return builder
                 .routes()
                 .route(route -> route
-                        .path("/msvc-iam/api/v1/roles/**")
+                        .path("/api/v1/roles/**")
                         .filters(filter -> filter.filter(authFilter))
                         .uri("lb://msvc-iam")
                 )
                 .route(route -> route
-                        .path("/msvc-profile/api/v1/profiles/**")
+                        .path("/api/v1/profiles/**")
                         .filters(filter -> filter.filter(authFilter))
                         .uri("lb://msvc-profile")
                 )
                 .route(route -> route
-                        .path("/msvc-iam/api/v1/authentication/**")
+                        .path("/api/v1/fields/**")
+                        .filters(filter -> filter.filter(authFilter))
+                        .uri("lb://msvc-field")
+                )
+                .route(route -> route
+                        .path("/api/v1/workers/**")
+                        .filters(filter -> filter.filter(authFilter))
+                        .uri("lb://msvc-field")
+                )
+                .route(route -> route
+                        .path("/api/v1/finances/**")
+                        .filters(filter -> filter.filter(authFilter))
+                        .uri("lb://msvc-finance")
+                )
+                .route(route -> route
+                        .path("/api/v1/payments/**")
+                        .filters(filter -> filter.filter(authFilter))
+                        .uri("lb://msvc-payment")
+                )
+                .route(route -> route
+                        .path("/api/v1/products/**")
+                        .filters(filter -> filter.filter(authFilter))
+                        .uri("lb://msvc-store")
+                )
+                .route(route -> route
+                        .path("/api/v1/payment-products/**")
+                        .filters(filter -> filter.filter(authFilter))
+                        .uri("lb://msvc-store")
+                )
+                .route(route -> route
+                        .path("/api/v1/subscriptions/**")
+                        .filters(filter -> filter.filter(authFilter))
+                        .uri("lb://msvc-subscription")
+                )
+                .route(route -> route
+                        .path("/api/v1/agricultural-processes/**")
+                        .filters(filter -> filter.filter(authFilter))
+                        .uri("lb://msvc-agriculturalProcess")
+                )
+                .route(route -> route
+                        .path("/api/v1/authentication/**")
                         .uri("lb://msvc-iam")
                 )
                 .build();

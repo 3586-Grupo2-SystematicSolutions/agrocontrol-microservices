@@ -1,9 +1,6 @@
 server:
   port: 8092
 
-  servlet:
-    context-path: /msvc-profile
-
 spring:
   application:
     name: msvc-profile
