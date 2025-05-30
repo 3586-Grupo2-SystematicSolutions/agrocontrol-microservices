@@ -2,6 +2,8 @@ spring:
   application:
     name: msvc-gateway
 
+  profiles:
+    default: oauth2
+
   config:
     import: optional:configserver:http://localhost:8888
-

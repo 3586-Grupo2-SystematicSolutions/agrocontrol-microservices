@@ -4,6 +4,7 @@ server:
 spring:
   application:
     name: msvc-gateway
+
   cloud:
     gateway:
       routes:
@@ -25,7 +26,7 @@ spring:
         - id: msvc-field-workers
           uri: lb://MSVC-FIELD
           predicates:
-              - Path=/api/v1/workers/**
+            - Path=/api/v1/workers/**
 
         - id: msvc-finance
           uri: lb://MSVC-FINANCE

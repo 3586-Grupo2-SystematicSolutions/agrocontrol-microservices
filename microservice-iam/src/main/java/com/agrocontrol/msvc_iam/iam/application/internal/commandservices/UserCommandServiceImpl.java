@@ -6,6 +6,7 @@ import com.agrocontrol.msvc_iam.iam.application.internal.outboundservices.acl.Ex
 import com.agrocontrol.msvc_iam.iam.application.internal.outboundservices.hashing.HashingService;
 import com.agrocontrol.msvc_iam.iam.application.internal.outboundservices.tokens.TokenService;
 import com.agrocontrol.msvc_iam.iam.domain.model.aggregates.User;
+import com.agrocontrol.msvc_iam.iam.domain.model.commands.RefreshTokenCommand;
 import com.agrocontrol.msvc_iam.iam.domain.model.commands.SignInCommand;
 import com.agrocontrol.msvc_iam.iam.domain.model.commands.SignUpAgriculturalProducerCommand;
 import com.agrocontrol.msvc_iam.iam.domain.model.commands.SignUpDistributorCommand;
@@ -106,5 +107,14 @@ public class UserCommandServiceImpl implements UserCommandService {
         }
 
         return Optional.of(user);
+    }
+
+    @Override
+    public Optional<ImmutablePair<User, String>> handle(RefreshTokenCommand command) {
+        String username = tokenService.getUsernameFromToken(command.token());
+        var user = userRepository.findByEmail(username);
+        if (user.isEmpty()) throw new RuntimeException("User not found");
+        var token = tokenService.generateToken(user.get().getEmail());
+        return Optional.of(ImmutablePair.of(user.get(), token));
     }
 }
