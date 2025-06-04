@@ -1,0 +1,253 @@
+services:
+  msvc-config:
+    build:
+      context: ./microservice-config
+      dockerfile: Dockerfile
+    container_name: msvc-config
+    image: microservice-config:v1
+    ports:
+      - "8888:8888"
+    restart: always
+    networks:
+      - agrocontrol-network
+
+  msvc-eureka:
+    build:
+      context: ./microservice-eureka
+      dockerfile: Dockerfile
+    container_name: msvc-eureka
+    image: microservice-eureka:v1
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://msvc-config:8888
+      EUREKA_SERVER: http://msvc-eureka:8761/eureka
+    restart: always
+    networks:
+      - agrocontrol-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    depends_on:
+      - msvc-config
+
+  mysql-agrocontrol:
+    container_name: mysql-agrocontrol
+    image: mysql:latest
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: iam-db
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    networks:
+      - agrocontrol-network
+
+
+  msvc-logs-and-traceability:
+    container_name: msvc-logs-and-traceability
+    image: openzipkin/zipkin-slim:latest
+    ports:
+      - "9411:9411"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+
+  msvc-profile:
+    build:
+      context: ./microservice-profile
+      dockerfile: Dockerfile
+    container_name: msvc-profile
+    image: microservice-profile:v1
+    ports:
+      - "8092:8092"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8092/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    depends_on:
+      - msvc-config
+      - msvc-logs-and-traceability
+      - msvc-eureka
+      - mysql-agrocontrol
+
+  msvc-iam:
+    build:
+      context: ./microservice-iam
+      dockerfile: Dockerfile
+    container_name: msvc-iam
+    image: microservice-iam:v1
+    ports:
+      - "8091:8091"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+    depends_on:
+      - msvc-config
+      - msvc-logs-and-traceability
+      - msvc-eureka
+      - mysql-agrocontrol
+      - msvc-profile
+
+  msvc-field:
+    build:
+      context: ./microservice-field
+      dockerfile: Dockerfile
+    container_name: msvc-field
+    image: microservice-field:v1
+    ports:
+      - "8093:8093"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+    depends_on:
+      - msvc-config
+      - msvc-logs-and-traceability
+      - msvc-eureka
+      - mysql-agrocontrol
+      - msvc-profile
+
+  msvc-finance:
+    build:
+      context: ./microservice-finance
+      dockerfile: Dockerfile
+    container_name: msvc-finance
+    image: microservice-finance:v1
+    ports:
+      - "8094:8094"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+    depends_on:
+      - msvc-config
+      - msvc-logs-and-traceability
+      - msvc-eureka
+      - mysql-agrocontrol
+
+  msvc-payment:
+    build:
+      context: ./microservice-payment
+      dockerfile: Dockerfile
+    container_name: msvc-payment
+    image: microservice-payment:v1
+    ports:
+      - "8095:8095"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+    depends_on:
+      - msvc-config
+      - msvc-logs-and-traceability
+      - msvc-eureka
+      - mysql-agrocontrol
+      - msvc-profile
+
+  msvc-store:
+    build:
+      context: ./microservice-store
+      dockerfile: Dockerfile
+    container_name: msvc-store
+    image: microservice-store:v1
+    ports:
+      - "8096:8096"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+    depends_on:
+      - msvc-config
+      - msvc-logs-and-traceability
+      - msvc-eureka
+      - mysql-agrocontrol
+      - msvc-profile
+
+  msvc-subscription:
+    build:
+      context: ./microservice-subscription
+      dockerfile: Dockerfile
+    container_name: msvc-subscription
+    image: microservice-subscription:v1
+    ports:
+      - "8097:8097"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+    depends_on:
+      - msvc-config
+      - msvc-logs-and-traceability
+      - msvc-eureka
+      - mysql-agrocontrol
+
+  msvc-agriculturalprocess:
+    build:
+      context: ./microservice-agriculturalprocess
+      dockerfile: Dockerfile
+    container_name: msvc-agriculturalprocess
+    image: microservice-agriculturalprocess:v1
+    ports:
+      - "8098:8098"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+    depends_on:
+      - msvc-config
+      - msvc-logs-and-traceability
+      - msvc-eureka
+      - mysql-agrocontrol
+      - msvc-payment
+      - msvc-store
+      - msvc-field
+
+  msvc-gateway:
+    build:
+      context: ./microservice-gateway
+      dockerfile: Dockerfile
+    container_name: msvc-gateway
+    image: microservice-gateway:v1
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env.dev
+    restart: always
+    networks:
+      - agrocontrol-network
+    depends_on:
+      - msvc-config
+      - msvc-logs-and-traceability
+      - msvc-eureka
+      - mysql-agrocontrol
+      - msvc-profile
+      - msvc-iam
+      - msvc-field
+      - msvc-finance
+      - msvc-payment
+      - msvc-store
+      - msvc-subscription
+      - msvc-agriculturalprocess
+networks:
+  agrocontrol-network:
