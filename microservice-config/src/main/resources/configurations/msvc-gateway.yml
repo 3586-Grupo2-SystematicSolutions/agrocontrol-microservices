@@ -13,6 +13,11 @@ spring:
           predicates:
             - Path=/api/v1/authentication/**
 
+        - id: msvc-iam-users
+          uri: lb://MSVC-IAM
+          predicates:
+            - Path=/api/v1/users/**
+
         - id: msvc-profile
           uri: lb://MSVC-PROFILE
           predicates:
