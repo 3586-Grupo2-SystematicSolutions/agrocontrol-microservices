@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -132,7 +133,7 @@ public class SubscriptionsController {
         var query = new GetSubscriptionByUserIdQuery(paymentUserId);
         Optional<Subscription> payment = this.paymentQueryService.handle(query);
 
-        return payment.map(source -> new ResponseEntity<>(SubscriptionResourceFromEntityAssembler.toResourceFromEntity(source), CREATED))
+        return payment.map(source -> new ResponseEntity<>(SubscriptionResourceFromEntityAssembler.toResourceFromEntity(source), OK))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -59,7 +60,7 @@ public class ProductsController {
         Optional<Product> product = this.productCommandService
                 .handle(UpdateProductCommandFromResourceAssembler.toCommandFromResource(resource, id));
 
-        return product.map(source -> new ResponseEntity<>(ProductResourceFromEntityAssembler.toResourceFromEntity(source), CREATED))
+        return product.map(source -> new ResponseEntity<>(ProductResourceFromEntityAssembler.toResourceFromEntity(source), OK))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
@@ -73,7 +74,7 @@ public class ProductsController {
         Optional<Product> product = this.productCommandService
                 .handle(ChangeQuantityOfProductCommandFromResourceAssembler.toCommandFromResource(resource, id));
 
-        return product.map(source -> new ResponseEntity<>(ProductResourceFromEntityAssembler.toResourceFromEntity(source), CREATED))
+        return product.map(source -> new ResponseEntity<>(ProductResourceFromEntityAssembler.toResourceFromEntity(source), OK))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
@@ -87,7 +88,7 @@ public class ProductsController {
         Optional<Product> product = this.productCommandService
                 .handle(UpdateProductOwnerCommandFromResourceAssembler.toCommandFromResource(resource));
 
-        return product.map(source -> new ResponseEntity<>(ProductResourceFromEntityAssembler.toResourceFromEntity(source), CREATED))
+        return product.map(source -> new ResponseEntity<>(ProductResourceFromEntityAssembler.toResourceFromEntity(source), OK))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 

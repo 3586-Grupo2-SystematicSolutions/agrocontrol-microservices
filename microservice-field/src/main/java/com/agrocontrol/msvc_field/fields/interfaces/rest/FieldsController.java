@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -67,14 +68,14 @@ public class FieldsController {
      */
     @Operation(summary = "Update a field")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Field updated"),
+            @ApiResponse(responseCode = "200", description = "Field updated"),
             @ApiResponse(responseCode = "400", description = "Invalid Input")
     })
     @PutMapping("/{id}/update-field")
     public ResponseEntity<FieldResource> updateField(@PathVariable Long id, @RequestBody UpdateFieldResource resource) {
         var command = UpdateFieldCommandFromResourceAssembler.toCommandFromResource(resource,id);
         Optional<Field> field = this.fieldCommandService.handle(command);
-        return field.map(source-> new ResponseEntity<>(FieldResourceFromEntityAssembler.toResourceFromEntity(source),CREATED))
+        return field.map(source-> new ResponseEntity<>(FieldResourceFromEntityAssembler.toResourceFromEntity(source),OK))
                 .orElseGet(()->ResponseEntity.badRequest().build());
     }
 
@@ -108,7 +109,7 @@ public class FieldsController {
 
     @Operation(summary = "Get fields by producer ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Fields found"),
+            @ApiResponse(responseCode = "200", description = "Fields found"),
             @ApiResponse(responseCode = "400",description = "Fields not found")
     })
     @GetMapping("/user/{userId}")
@@ -121,7 +122,7 @@ public class FieldsController {
         List<FieldResource> fieldResources = fields.stream()
                 .map(FieldResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
-        return new ResponseEntity<>(fieldResources,CREATED);
+        return new ResponseEntity<>(fieldResources,OK);
     }
 
     /**
@@ -133,7 +134,7 @@ public class FieldsController {
      */
     @Operation(summary = "Delete field by a field ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Field deleted"),
+            @ApiResponse(responseCode = "204",description = "Field deleted"),
             @ApiResponse(responseCode = "400",description = "Field not found")
     })
     @DeleteMapping("/{id}")
