@@ -62,21 +62,12 @@ services:
     build:
       context: ./microservice-profile
       dockerfile: Dockerfile
-    container_name: msvc-profile
     image: microservice-profile:v1
-    ports:
-      - "8092:8092"
     env_file:
       - .env.dev
     restart: always
     networks:
       - agrocontrol-network
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8092/actuator/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 15s
     depends_on:
       - msvc-config
       - msvc-logs-and-traceability

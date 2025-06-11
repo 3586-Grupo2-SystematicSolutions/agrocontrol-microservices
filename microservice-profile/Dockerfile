@@ -4,9 +4,6 @@ FROM amazoncorretto:21-alpine-jdk
 # Set working directory inside the container
 WORKDIR /app
 
-# Expose port for external access to the service
-EXPOSE 8092
-
 # Copy the application JAR file into the container
 ADD ./target/microservice-profile-0.0.1-SNAPSHOT.jar microservice-profile.jar
 
