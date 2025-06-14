@@ -44,3 +44,22 @@ management:
   zipkin:
     tracing:
       endpoint: ${ZIPKIN_ENDPOINT:http://localhost:9411/api/v2/spans}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      profile-store-cb:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        permittedNumberOfCallsInHalfOpenState: 5
+        waitDurationInOpenState: 7s
+  timelimiter:
+    instances:
+      profile-store-tl:
+        timeoutDuration: 7s
+        cancelRunningFuture: true

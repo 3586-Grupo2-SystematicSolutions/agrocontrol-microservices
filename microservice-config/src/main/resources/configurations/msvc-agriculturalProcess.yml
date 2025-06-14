@@ -44,3 +44,50 @@ management:
   zipkin:
     tracing:
       endpoint: ${ZIPKIN_ENDPOINT:http://localhost:9411/api/v2/spans}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      field-agricultural-process-cb:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        permittedNumberOfCallsInHalfOpenState: 5
+        waitDurationInOpenState: 7s
+      finance-agricultural-process-cb:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        permittedNumberOfCallsInHalfOpenState: 5
+        waitDurationInOpenState: 7s
+      store-agricultural-process-cb:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        permittedNumberOfCallsInHalfOpenState: 5
+        waitDurationInOpenState: 7s
+
+  timelimiter:
+    instances:
+      field-agricultural-process-tl:
+        timeoutDuration: 7s
+        cancelRunningFuture: true
+      finance-agricultural-process-tl:
+        timeoutDuration: 7s
+        cancelRunningFuture: true
+      store-agricultural-process-tl:
+        timeoutDuration: 7s
+        cancelRunningFuture: true
+
