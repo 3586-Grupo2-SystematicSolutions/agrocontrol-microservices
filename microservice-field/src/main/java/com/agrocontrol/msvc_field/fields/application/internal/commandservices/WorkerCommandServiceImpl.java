@@ -23,7 +23,7 @@ public class WorkerCommandServiceImpl implements WorkerCommandService {
 
     @Override
     public Optional<Worker> handle(CreateWorkerCommand command) {
-        externalProfileService.existsAgriculturalProducer(command.producerId());
+        externalProfileService.existsAgriculturalProducer(command.producerId()).join();
 
         var worker = new Worker(command);
         var workerCreated = workerRepository.save(worker);

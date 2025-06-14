@@ -2,7 +2,7 @@ package com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.application
 
 import com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.application.internal.outboundservices.acl.ExternalFinanceService;
 import com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.application.internal.outboundservices.acl.ExternalStoreService;
-import com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.application.internal.outboundservices.acl.ExternalWorkerService;
+import com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.application.internal.outboundservices.acl.ExternalFieldService;
 import com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.domain.model.aggregates.AgriculturalProcess;
 import com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.domain.model.commands.*;
 import com.agrocontrol.msvc_agriculturalProcess.agriculturalProcess.domain.model.valueobjects.AgriculturalActivity;
@@ -17,14 +17,14 @@ public class AgriculturalProcessCommandServiceImpl implements AgriculturalProces
     private final AgriculturalProcessRepository agriculturalProcessRepository;
     private final ExternalFinanceService externalFinanceService;
     private final ExternalStoreService externalStoreService;
-    private final ExternalWorkerService externalWorkerService;
+    private final ExternalFieldService externalFieldService;
 
     public AgriculturalProcessCommandServiceImpl(AgriculturalProcessRepository agriculturalProcessRepository,
-                                                 ExternalFinanceService externalFinanceService, ExternalStoreService externalStoreService, ExternalWorkerService externalWorkerService) {
+                                                 ExternalFinanceService externalFinanceService, ExternalStoreService externalStoreService, ExternalFieldService externalFieldService) {
         this.agriculturalProcessRepository = agriculturalProcessRepository;
         this.externalFinanceService = externalFinanceService;
         this.externalStoreService = externalStoreService;
-        this.externalWorkerService = externalWorkerService;
+        this.externalFieldService = externalFieldService;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class AgriculturalProcessCommandServiceImpl implements AgriculturalProces
         var subTotal = command.pricePerKg() * command.quantityInKg();
 
         this.externalFinanceService.createFinance(agriculturalProcess.getId(), "INCOME",
-                "Harvest day: " + command.date(), subTotal);
+                "Harvest day: " + command.date(), subTotal).join();
 
         return Optional.ofNullable(updatedAgriculturalProcess.getLastActivityId());
     }
@@ -131,12 +131,12 @@ public class AgriculturalProcessCommandServiceImpl implements AgriculturalProces
 
         String name = "";
         if (command.cost() > 0) {
-            name = this.externalWorkerService.getWorkerNameById(command.resourceId());
+            name = this.externalFieldService.getWorkerNameById(command.resourceId()).join();
             this.externalFinanceService.createFinance(agriculturalProcess.getId(), "EXPENSE",
-                    command.description(), command.cost());
+                    command.description(), command.cost()).join();
         } else if (command.quantity() > 0) {
-            name = String.valueOf(this.externalStoreService.getProductNameById(command.resourceId()));
-            this.externalStoreService.changeQuantityOfProduct(command.resourceId(), command.quantity());
+            name = String.valueOf(this.externalStoreService.getProductNameById(command.resourceId()).join());
+            this.externalStoreService.changeQuantityOfProduct(command.resourceId(), command.quantity()).join();
         } else {
             name = "Resource";
         }
