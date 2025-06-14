@@ -2,7 +2,11 @@ package com.agrocontrol.msvc_store.store.application.internal.outboundservices.a
 
 
 import com.agrocontrol.msvc_store.store.interfaces.communications.ProfileFeignClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service("externalProfileServiceStore")
 public class ExternalProfileService {
@@ -13,17 +17,25 @@ public class ExternalProfileService {
         this.profileFeignClient = profileFeignClient;
     }
 
-    public void existsDistributor(Long userId) {
-        boolean exists = profileFeignClient.existsDistributorByUserId(userId);
-        if (!exists) {
-            throw new IllegalArgumentException("Distributor not found with id %s".formatted(userId));
-        }
+    @CircuitBreaker(name = "profile-store-cb")
+    @TimeLimiter(name = "profile-store-tl")
+    public CompletableFuture<Void> existsDistributor(Long userId) {
+        return CompletableFuture.runAsync(() -> {
+            boolean exists = profileFeignClient.existsDistributorByUserId(userId);
+            if (!exists) {
+                throw new IllegalArgumentException("Distributor not found with id %s".formatted(userId));
+            }
+        });
     }
 
-    public void existsAgriculturalProducer(Long userId) {
-        boolean exists = profileFeignClient.existsAgriculturalProducerByUserId(userId);
-        if (!exists) {
-            throw new IllegalArgumentException("Agricultural Prodcuer not found with id %s".formatted(userId));
-        }
+    @CircuitBreaker(name = "profile-store-cb")
+    @TimeLimiter(name = "profile-store-tl")
+    public CompletableFuture<Void> existsAgriculturalProducer(Long userId) {
+        return CompletableFuture.runAsync(() -> {
+            boolean exists = profileFeignClient.existsAgriculturalProducerByUserId(userId);
+            if (!exists) {
+                throw new IllegalArgumentException("Agricultural Producer not found with id %s".formatted(userId));
+            }
+        });
     }
 }

@@ -25,7 +25,7 @@ public class WorkerQueryServiceImpl implements WorkerQueryService {
 
     @Override
     public List<Worker> handle(GetAllWorkersByProducerId query) {
-        externalProfileService.exitsAgriculturalProducer(query.producerId());
+        externalProfileService.existsAgriculturalProducer(query.producerId()).join();
         var producerId = new ProducerId(query.producerId());
         return this.workerRepository.findAllByProducerId(producerId);
     }

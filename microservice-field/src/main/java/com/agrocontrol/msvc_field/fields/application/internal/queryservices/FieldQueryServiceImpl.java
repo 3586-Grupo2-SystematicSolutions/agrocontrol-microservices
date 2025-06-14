@@ -29,7 +29,7 @@ public class FieldQueryServiceImpl implements FieldQueryService {
 
     @Override
     public List<Field> handle(GetFieldsByProducerIdQuery query) {
-        externalProfileService.exitsAgriculturalProducer(query.producerId());
+        externalProfileService.existsAgriculturalProducer(query.producerId()).join();
         ProducerId producerId = new ProducerId(query.producerId());
 
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "msvc-store")
-public interface ProductFeignClient {
+public interface StoreFeignClient {
     @GetMapping("/api/v1/products/name/{productId}")
     String getProductNameById (@PathVariable Long productId);
 

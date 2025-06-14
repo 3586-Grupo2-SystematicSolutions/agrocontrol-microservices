@@ -71,7 +71,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         Long agriculturalProducerId = externalProfileService.createAgriculturalProducer(
                 command.fullName(), command.city(), command.country(),
                 command.phone(), command.dni(), user.getId()
-        );
+        ).join();
 
         if (agriculturalProducerId == 0L) {
             throw new RuntimeException("Failed to create AgriculturalProducer profile");
@@ -100,7 +100,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         Long distributorId = externalProfileService.createDistributor(
                 command.fullName(), command.city(), command.country(),
                 command.phone(), command.companyName(), command.ruc(), user.getId()
-        );
+        ).join();
 
         if (distributorId == 0L) {
             throw new RuntimeException("Failed to create Distributor profile");

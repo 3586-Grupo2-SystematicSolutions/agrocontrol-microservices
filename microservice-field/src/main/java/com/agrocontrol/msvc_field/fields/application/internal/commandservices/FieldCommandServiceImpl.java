@@ -24,7 +24,7 @@ public class FieldCommandServiceImpl implements FieldCommandService {
 
     @Override
     public Optional<Field> handle(CreateFieldCommand command) {
-        externalProfileService.exitsAgriculturalProducer(command.producerId());
+        externalProfileService.existsAgriculturalProducer(command.producerId()).join();
         var field = new Field(command);
         var fieldCreated = fieldRepository.save(field);
         return Optional.of(fieldCreated);
@@ -41,7 +41,7 @@ public class FieldCommandServiceImpl implements FieldCommandService {
 
     @Override
     public void handle(DeleteFieldCommand command) {
-        externalProfileService.exitsAgriculturalProducer(command.producerId());
+        externalProfileService.existsAgriculturalProducer(command.producerId()).join();
         var producerId = new ProducerId(command.producerId());
 
 

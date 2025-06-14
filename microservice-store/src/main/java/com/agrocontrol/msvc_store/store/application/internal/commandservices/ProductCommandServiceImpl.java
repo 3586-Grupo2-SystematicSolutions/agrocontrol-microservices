@@ -22,7 +22,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     @Override
     public Optional<Product> handle(CreateProductCommand command) {
-        externalProfileService.existsDistributor(command.userId());
+        externalProfileService.existsDistributor(command.userId()).join();
 
        if(command.quantity() <= 0 && command.unitPrice() <= 0)
            throw new IllegalArgumentException("Unit price must be greater than 0");

@@ -31,7 +31,7 @@ public class PaymentProductCommandServiceImpl implements PaymentProductCommandSe
         var product = productRepository.findById(command.productId())
                 .orElseThrow(() -> new IllegalArgumentException("The product not exist with id" + command.productId()));
 
-        externalProfileService.existsAgriculturalProducer(command.userId()); // Verify if the user is an agricultural producer
+        externalProfileService.existsAgriculturalProducer(command.userId()).join(); // Verify if the user is an agricultural producer
 
         Long distributorId = product.getUserId();
         String productName = product.getName();
