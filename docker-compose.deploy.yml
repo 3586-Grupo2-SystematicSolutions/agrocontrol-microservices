@@ -1,10 +1,6 @@
 services:
   msvc-config:
-    build:
-      context: ./microservice-config
-      dockerfile: Dockerfile
-    container_name: msvc-config
-    image: microservice-config:v1
+    image: anonimato0/microservice-config:v1
     ports:
       - "8888:8888"
     restart: always
@@ -12,11 +8,7 @@ services:
       - agrocontrol-network
 
   msvc-eureka:
-    build:
-      context: ./microservice-eureka
-      dockerfile: Dockerfile
-    container_name: msvc-eureka
-    image: microservice-eureka:v1
+    image: anonimato0/microservice-eureka:v1
     ports:
       - "8761:8761"
     environment:
@@ -46,7 +38,6 @@ services:
     networks:
       - agrocontrol-network
 
-
   msvc-logs-and-traceability:
     container_name: msvc-logs-and-traceability
     image: openzipkin/zipkin-slim:latest
@@ -59,10 +50,7 @@ services:
       - agrocontrol-network
 
   msvc-profile:
-    build:
-      context: ./microservice-profile
-      dockerfile: Dockerfile
-    image: microservice-profile:v1
+    image: anonimato0/microservice-profile:v1
     env_file:
       - .env.dev
     restart: always
@@ -75,11 +63,7 @@ services:
       - mysql-agrocontrol
 
   msvc-iam:
-    build:
-      context: ./microservice-iam
-      dockerfile: Dockerfile
-    container_name: msvc-iam
-    image: microservice-iam:v1
+    image: anonimato0/microservice-iam:v1
     ports:
       - "8091:8091"
     env_file:
@@ -95,11 +79,7 @@ services:
       - msvc-profile
 
   msvc-field:
-    build:
-      context: ./microservice-field
-      dockerfile: Dockerfile
-    container_name: msvc-field
-    image: microservice-field:v1
+    image: anonimato0/microservice-field:v1
     ports:
       - "8093:8093"
     env_file:
@@ -115,11 +95,7 @@ services:
       - msvc-profile
 
   msvc-finance:
-    build:
-      context: ./microservice-finance
-      dockerfile: Dockerfile
-    container_name: msvc-finance
-    image: microservice-finance:v1
+    image: anonimato0/microservice-finance:v1
     ports:
       - "8094:8094"
     env_file:
@@ -134,11 +110,7 @@ services:
       - mysql-agrocontrol
 
   msvc-payment:
-    build:
-      context: ./microservice-payment
-      dockerfile: Dockerfile
-    container_name: msvc-payment
-    image: microservice-payment:v1
+    image: anonimato0/microservice-payment:v1
     ports:
       - "8095:8095"
     env_file:
@@ -154,11 +126,7 @@ services:
       - msvc-profile
 
   msvc-store:
-    build:
-      context: ./microservice-store
-      dockerfile: Dockerfile
-    container_name: msvc-store
-    image: microservice-store:v1
+    image: anonimato0/microservice-store:v1
     ports:
       - "8096:8096"
     env_file:
@@ -174,11 +142,7 @@ services:
       - msvc-profile
 
   msvc-subscription:
-    build:
-      context: ./microservice-subscription
-      dockerfile: Dockerfile
-    container_name: msvc-subscription
-    image: microservice-subscription:v1
+    image: anonimato0/microservice-subscription:v1
     ports:
       - "8097:8097"
     env_file:
@@ -193,11 +157,7 @@ services:
       - mysql-agrocontrol
 
   msvc-agriculturalprocess:
-    build:
-      context: ./microservice-agriculturalprocess
-      dockerfile: Dockerfile
-    container_name: msvc-agriculturalprocess
-    image: microservice-agriculturalprocess:v1
+    image: anonimato0/microservice-agriculturalprocess:v1
     ports:
       - "8098:8098"
     env_file:
@@ -215,11 +175,7 @@ services:
       - msvc-field
 
   msvc-gateway:
-    build:
-      context: ./microservice-gateway
-      dockerfile: Dockerfile
-    container_name: msvc-gateway
-    image: microservice-gateway:v1
+    image: anonimato0/microservice-gateway:v1
     ports:
       - "8080:8080"
     env_file:
@@ -240,5 +196,6 @@ services:
       - msvc-store
       - msvc-subscription
       - msvc-agriculturalprocess
+
 networks:
   agrocontrol-network:
